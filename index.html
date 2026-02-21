@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RK KNIT FAB - Visitor Check-In</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+    <div class="bg-shape shape3"></div>
+
+    <div id="holidayBanner" class="holiday-banner" style="display: none;">
+        <!-- Banner content will be updated dynamically via JS if needed -->
+        <p><i class="fas fa-star"></i> Welcome to RK KNIT FAB. Special Holiday Greetings! <i class="fas fa-star"></i>
+        </p>
+    </div>
+
+    <main class="form-container">
+        <header class="branding">
+            <div class="logo-container">
+                <!-- Ensure logo.png is placed in the images folder -->
+                <img src="images/rk knit fab logo png.png" alt="RK KNIT FAB Logo" id="logoImage"
+                    onerror="this.src='https://via.placeholder.com/150/1e3a8a/ffffff?text=RK+KNIT+FAB';">
+            </div>
+            <h1 class="welcome-text">Welcome to</h1>
+            <h1>RK KNIT FAB</h1>
+            <p>Visitor Registration</p>
+        </header>
+
+        <section id="returningVisitorSection" class="returning-section glass-panel">
+            <div class="returning-header">
+                <i class="fas fa-history"></i>
+                <h3>Visited Recently?</h3>
+            </div>
+            <p>Select your profile for a quick check-in.</p>
+            <div id="returningProfiles" class="profiles-list">
+                <!-- Profiles will be injected here via JS -->
+            </div>
+        </section>
+
+        <form id="checkInForm" class="glass-panel">
+            <div class="form-group">
+                <label for="category">Category *</label>
+                <div class="category-grid">
+                    <input type="radio" name="category" id="cat-visitor" value="Visitor" required checked>
+                    <label for="cat-visitor" class="category-card"><i class="fas fa-user"></i> Visitor</label>
+
+                    <input type="radio" name="category" id="cat-client" value="Client">
+                    <label for="cat-client" class="category-card"><i class="fas fa-briefcase"></i> Client</label>
+
+                    <input type="radio" name="category" id="cat-courier" value="Courier">
+                    <label for="cat-courier" class="category-card"><i class="fas fa-box"></i> Courier</label>
+
+                    <input type="radio" name="category" id="cat-delivery" value="Delivery">
+                    <label for="cat-delivery" class="category-card"><i class="fas fa-truck"></i> Delivery</label>
+
+                    <input type="radio" name="category" id="cat-other" value="Other">
+                    <label for="cat-other" class="category-card"><i class="fas fa-ellipsis-h"></i> Other</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" name="fullName" required placeholder="John Doe">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" name="phone" required placeholder="+91 9876543210">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="optional">(Optional)</span></label>
+                <input type="email" id="email" name="email" placeholder="john@example.com">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address *</label>
+                <textarea id="address" name="address" required placeholder="City, State" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="company">Company / Organization <span class="optional">(Optional)</span></label>
+                <input type="text" id="company" name="company" placeholder="Enter your company name">
+            </div>
+
+            <div class="form-group">
+                <label for="reason">Reason for Visit *</label>
+                <input type="text" id="reason" name="reason" required placeholder="Enter your reason for visit">
+            </div>
+
+            <div class="form-group">
+                <label for="meetWho">Who do you want to meet? *</label>
+                <input type="text" id="meetWho" name="meetWho" required list="staffList"
+                    placeholder="Select or type name">
+                <datalist id="staffList">
+                    <option value="Kartik Sir">
+                    <option value="Mohit Sir">
+                    <option value="Neelam Sharma">
+                    <option value="Ritu">
+                    <option value="Muskan Ma'am">
+                </datalist>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" id="submitBtn" class="primary-btn">
+                    <span>Check In</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <div id="loader" class="loader-container" style="display: none;">
+                <div class="spinner"></div>
+                <p>Checking you in...</p>
+            </div>
+            <div id="successMessage" class="success-message" style="display: none;">
+                <i class="fas fa-check-circle"></i>
+                <h3>Check-in Successful!</h3>
+                <p>Welcome to RK KNIT FAB. Someone will be with you shortly.</p>
+                <div class="social-request">
+                    <p>We'd love to hear about your experience!</p>
+                    <a href="https://g.page/r/CdfAzsSmyiUhEBM/review" target="_blank" class="google-review-btn"
+                        onclick="trackSocialClick('google')"><i class="fab fa-google"></i> Rate us on Google</a>
+
+                    <p style="margin-top: 20px;">Follow our latest updates:</p>
+                    <a href="https://instagram.com/rk_knit_fab" target="_blank" class="instagram-btn"
+                        onclick="trackSocialClick('instagram')"><i class="fab fa-instagram"></i> Follow on Instagram</a>
+                </div>
+                <button type="button" class="secondary-btn" onclick="location.reload()">New Check-In</button>
+            </div>
+        </form>
+        <footer>
+            <p>&copy; 2026 RK KNIT FAB. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script src="js/form.js"></script>
+</body>
+
+</html>

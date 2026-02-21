@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - RK KNIT FAB</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <main class="admin-container fade-in">
+        <header class="admin-header">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div class="logo-container" style="width: 80px; height: 80px; margin: 0;">
+                    <img src="images/rk knit fab logo png.png" alt="RK Logo"
+                        onerror="this.src='https://via.placeholder.com/80/1e3a8a/ffffff?text=RK';">
+                </div>
+                <div>
+                    <h1>Admin Dashboard</h1>
+                    <p>Manage Active Visitors</p>
+                </div>
+            </div>
+            <div>
+                <button id="refreshBtn" class="primary-btn" style="width: auto; padding: 10px 20px;">
+                    <i class="fas fa-sync-alt"></i> Refresh Data
+                </button>
+            </div>
+        </header>
+
+        <section class="admin-stats">
+            <div class="stat-card">
+                <h3 id="statTotal">0</h3>
+                <p>Total Inside</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="statClients">0</h3>
+                <p>Clients</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="statVisitors">0</h3>
+                <p>Visitors</p>
+            </div>
+            <div class="stat-card" style="background: rgba(220, 252, 231, 0.7);">
+                <h3 id="statRated" style="color: #16a34a;">0</h3>
+                <p>Google Reviews</p>
+            </div>
+            <div class="stat-card" style="background: rgba(243, 232, 255, 0.7);">
+                <h3 id="statFollowed" style="color: #9333ea;">0</h3>
+                <p>Instagram Follows</p>
+            </div>
+        </section>
+
+        <section class="glass-panel">
+            <div class="admin-header" style="margin-bottom: 20px;">
+                <h2>Current Visitors</h2>
+
+                <div class="loader-container" id="adminLoader" style="padding: 0;">
+                    <i class="fas fa-circle-notch fa-spin" style="color: var(--primary-color); font-size: 1.5rem;"></i>
+                </div>
+            </div>
+
+            <div class="visitors-table-container">
+                <table id="visitorsTable">
+                    <thead>
+                        <tr>
+                            <th>Time In</th>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Category</th>
+                            <th>Meeting With</th>
+                            <th>Social</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="visitorsTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #64748b;">Loading visitors...</td>
+                        </tr>
+                        <!-- Rows dynamically populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 RK KNIT FAB. Internal Dashboard.</p>
+        </footer>
+    </main>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
