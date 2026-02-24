@@ -110,7 +110,27 @@ function handleFormSubmit(e) {
         payload.append(key, value);
     }
 
+    // Handle "Who do you want to meet" field manually
+    const meetWhoSelect = document.getElementById('meetWho');
+    let meetWhoValue = meetWhoSelect.value;
+    if (meetWhoValue === 'Other') {
+        meetWhoValue = document.getElementById('meetWhoOther').value;
+    }
+    payload.append('meetWho', meetWhoValue);
+
     sendDataToScript(payload, form);
+}
+
+function handleMeetWhoChange(select) {
+    const otherInput = document.getElementById('meetWhoOther');
+    if (select.value === 'Other') {
+        otherInput.style.display = 'block';
+        otherInput.required = true;
+        otherInput.focus();
+    } else {
+        otherInput.style.display = 'none';
+        otherInput.required = false;
+    }
 }
 
 function sendDataToScript(payload, form) {

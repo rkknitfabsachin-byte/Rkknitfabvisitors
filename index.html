@@ -97,15 +97,17 @@
 
             <div class="form-group">
                 <label for="meetWho">Who do you want to meet? *</label>
-                <input type="text" id="meetWho" name="meetWho" required list="staffList"
-                    placeholder="Select or type name">
-                <datalist id="staffList">
-                    <option value="Kartik Sir">
-                    <option value="Mohit Sir">
-                    <option value="Neelam Sharma">
-                    <option value="Ritu">
-                    <option value="Muskan Ma'am">
-                </datalist>
+                <select id="meetWho" class="custom-select" required onchange="handleMeetWhoChange(this)">
+                    <option value="" disabled selected>Select a person</option>
+                    <option value="Kartik Sir">Kartik Sir</option>
+                    <option value="Mohit Sir">Mohit Sir</option>
+                    <option value="Neelam Sharma">Neelam Sharma</option>
+                    <option value="Ritu">Ritu</option>
+                    <option value="Muskan Ma'am">Muskan Ma'am</option>
+                    <option value="Other">Other...</option>
+                </select>
+                <input type="text" id="meetWhoOther" placeholder="Enter name of the person"
+                    style="display: none; margin-top: 10px;">
             </div>
 
             <div class="form-actions">

@@ -55,21 +55,14 @@ function updateStats(visitors) {
 
     let clients = 0;
     let otherVisitors = 0;
-    let ratedCount = 0;
-    let followedCount = 0;
 
     visitors.forEach(v => {
         if (v[4] === 'Client') clients++; // v[4] is Category in array from GS
         else if (v[4] === 'Visitor') otherVisitors++;
-
-        if (v[6] === 'Yes') ratedCount++; // v[6] is Rated on Google
-        if (v[7] === 'Yes') followedCount++; // v[7] is Followed Instagram
     });
 
     document.getElementById('statClients').innerText = clients;
     document.getElementById('statVisitors').innerText = otherVisitors;
-    document.getElementById('statRated').innerText = ratedCount;
-    document.getElementById('statFollowed').innerText = followedCount;
 }
 
 function renderTable(visitors) {
