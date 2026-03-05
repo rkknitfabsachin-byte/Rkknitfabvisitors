@@ -54,14 +54,6 @@ function fillFormWithProfile(profile) {
     document.getElementById('address').value = profile.address || '';
     document.getElementById('company').value = profile.company || '';
 
-    // Select correct category
-    if (profile.category) {
-        const catInput = document.getElementById(`cat-${profile.category.toLowerCase()}`);
-        if (catInput) {
-            catInput.checked = true;
-        }
-    }
-
     // Scroll to form slightly
     document.querySelector('.form-group').scrollIntoView({ behavior: 'smooth' });
 }
@@ -74,9 +66,7 @@ function saveProfile(formData) {
         fullName: formData.get('fullName'),
         phone: formData.get('phone'),
         email: formData.get('email'),
-        address: formData.get('address'),
-        company: formData.get('company'),
-        category: formData.get('category')
+        company: formData.get('company')
     };
 
     // Remove old exact matches to avoid duplicates (based on phone/name)
@@ -109,6 +99,9 @@ function handleFormSubmit(e) {
     for (const [key, value] of formData.entries()) {
         payload.append(key, value);
     }
+
+    // Set default category to Pending for admin to review on checkout
+    payload.append('category', 'Pending');
 
     // Handle "Who do you want to meet" field manually
     const meetWhoSelect = document.getElementById('meetWho');
