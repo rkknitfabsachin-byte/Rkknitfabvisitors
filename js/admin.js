@@ -52,17 +52,6 @@ function fetchActiveVisitors() {
 
 function updateStats(visitors) {
     document.getElementById('statTotal').innerText = visitors.length;
-
-    let clients = 0;
-    let otherVisitors = 0;
-
-    visitors.forEach(v => {
-        if (v[4] === 'Client') clients++; // v[4] is Category in array from GS
-        else if (v[4] === 'Visitor') otherVisitors++;
-    });
-
-    document.getElementById('statClients').innerText = clients;
-    document.getElementById('statVisitors').innerText = otherVisitors;
 }
 
 function renderTable(visitors) {
@@ -91,7 +80,16 @@ function renderTable(visitors) {
             <td><i class="far fa-clock" style="color: #64748b; margin-right: 5px;"></i> ${timeIn}</td>
             <td style="font-weight: 500;">${name}</td>
             <td>${company}</td>
-            <td><span class="badge badge-${category.toLowerCase()}">${category}</span></td>
+            <td>
+                <select class="custom-select" id="cat-${rowId}" style="padding: 5px; font-size: 0.85rem; width: 130px; border-radius: 5px;">
+                    <option value="" disabled ${category === 'Pending' ? 'selected' : ''}>Select...</option>
+                    <option value="Visitor" ${category === 'Visitor' ? 'selected' : ''}>Visitor</option>
+                    <option value="Client" ${category === 'Client' ? 'selected' : ''}>Client</option>
+                    <option value="Courier" ${category === 'Courier' ? 'selected' : ''}>Courier</option>
+                    <option value="Delivery" ${category === 'Delivery' ? 'selected' : ''}>Delivery</option>
+                    <option value="Other" ${category === 'Other' ? 'selected' : ''}>Other</option>
+                </select>
+            </td>
             <td>${meetWho}</td>
             <td>
                 ${rated ? '<i class="fab fa-google" style="color: #16a34a; margin-right: 5px;" title="Rated"></i>' : '<i class="fab fa-google" style="color: #cbd5e1; margin-right: 5px;" title="Not Rated"></i>'}
@@ -112,7 +110,14 @@ function renderTable(visitors) {
 }
 
 function checkoutVisitor(rowId, btnElement) {
-    if (!confirm('Are you sure you want to check out this visitor?')) return;
+    const catSelect = document.getElementById('cat-' + rowId);
+    if (catSelect && !catSelect.value) {
+        alert('Please select a category for this visitor before checking out.');
+        return;
+    }
+    const category = catSelect ? catSelect.value : 'Visitor';
+
+    if (!confirm(`Are you sure you want to check out this visitor as ${category}?`)) return;
 
     btnElement.disabled = true;
     btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
@@ -120,6 +125,7 @@ function checkoutVisitor(rowId, btnElement) {
     const payload = new URLSearchParams();
     payload.append('action', 'checkout');
     payload.append('rowId', rowId);
+    payload.append('category', category);
 
     fetch(SCRIPT_URL, {
         method: 'POST',
