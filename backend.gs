@@ -131,8 +131,10 @@ function doPost(e) {
       allDataSheet.appendRow(rowData);
       
       // 2. Save to Category Sheet
-      const categorySheet = getOrCreateCategorySheet(payload.category);
-      categorySheet.appendRow(rowData);
+      if (payload.category !== 'Pending') {
+        const categorySheet = getOrCreateCategorySheet(payload.category);
+        categorySheet.appendRow(rowData);
+      }
 
       // 3. Send Automated Email if provided
       if (payload.email && payload.email !== "N/A") {
@@ -143,13 +145,30 @@ function doPost(e) {
     } 
     else if (action === "checkout") {
       const targetId = payload.rowId; // This is the UUID
+      const category = payload.category; // The finalized category from admin
       const timeOut = new Date();
       
-      // 1. Update in All Data
-      updateCheckoutTime(allDataSheet, targetId, timeOut);
+      // 1. Update in All Data and retrieve the row data
+      let rowDataToCopy = null;
+      const data = allDataSheet.getDataRange().getValues();
+      for (let i = 1; i < data.length; i++) {
+        if (data[i][0] === targetId) {
+          // Note: arrays are 0-indexed, but getRange is 1-indexed
+          allDataSheet.getRange(i + 1, 8).setValue(category); // Update Category in Column H (Index 8)
+          allDataSheet.getRange(i + 1, 11).setValue(timeOut); // Update Time Out in Column K (Index 11)
+          rowDataToCopy = allDataSheet.getRange(i + 1, 1, 1, allDataSheet.getLastColumn()).getValues()[0];
+          break;
+        }
+      }
       
-      // 2. Update in Category Sheets
-      const categories = ["Visitor", "Client", "Courier", "Delivery", "Other"];
+      // 2. Add to the chosen Category Sheet for record keeping
+      if (rowDataToCopy && category && category !== 'Pending') {
+        const categorySheet = getOrCreateCategorySheet(category);
+        categorySheet.appendRow(rowDataToCopy);
+      }
+      
+      // 3. In case it was already in a category sheet (e.g. returning visitor old logic), update checkout time there over all existing sheets
+      const categories = ["Visitor", "Client", "Courier", "Delivery", "Other", "Pending"];
       categories.forEach(cat => {
         const sheet = ss.getSheetByName(cat);
         if (sheet) {
@@ -157,7 +176,7 @@ function doPost(e) {
         }
       });
       
-      return createResponse({ status: "success", message: "Check-out recorded" });
+      return createResponse({ status: "success", message: "Check-out recorded", updatedCategory: category });
     }
     else if (action === "socialClick") {
       const id = payload.id;
